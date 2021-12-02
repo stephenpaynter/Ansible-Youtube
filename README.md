@@ -28,14 +28,14 @@ sudo apt-get install selinux-basics
 sudo setenforce 0  
 
 
-Ansible Installation Commands  
+### Ansible Installation Commands  
   
 sudo apt-get update  
 sudo apt-get install software-properties-common  
 sudo apt-get update  
 sudo -H pip install ansible  
 
-Validation Commands  
+### Validation Commands  
 
 ansible --version  
 ansible -m ping localhost  
