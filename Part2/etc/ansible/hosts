@@ -1,0 +1,69 @@
+[iOS]
+
+R1 ansible_host=192.168.1.93
+R2 ansible_host=192.168.1.72
+R3 ansible_host=192.168.1.159
+R4 ansible_host=192.168.1.95
+R5 ansible_host=192.168.1.223
+R6 ansible_host=192.168.1.97
+R8 ansible_host=192.168.1.202
+SW1 ansible_host=192.168.1.175
+SW2 ansible_host=192.168.1.173
+BB1 ansible_host=192.168.1.162
+BB2 ansible_host=192.168.1.167
+
+[ios:vars]
+
+ansible_ssh_pass=cisco
+ansible_user=cisco
+ansible_network_os=iOS
+ansible_connection=network_cli
+ansible_password=cisco
+auth_pass=cisco
+
+[nxos]
+
+R7 ansible_host=192.168.1.110
+
+[nxos:vars]
+
+ansible_ssh_pass=cisco
+ansible_user=cisco
+ansible_network_os=nxos
+ansible_connection=network_cli
+ansible_password=cisco
+
+[firewalls]
+ASA ansible_host=192.168.1.155
+
+[firewalls:vars]
+ansible_ssh_pass=cisco
+ansible_user=cisco
+ansible_network_os=cisco.asa.asa
+ansible_connection=network_cli
+ansible_password=cisco
+
+[F5]
+bigip1 ansible_host=192.168.1.196
+
+[F5:vars]
+ansible_connection=local
+ansible_network_os=bigip
+
+[paloalto]
+
+palo ansible_host=192.168.1.214
+
+[lab]
+SW1
+SW2
+BB1
+BB2
+R1
+R2
+R3
+R4
+R5
+R6
+R7
+R8
