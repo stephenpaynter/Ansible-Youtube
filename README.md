@@ -10,6 +10,43 @@ https://www.youtube.com/watch?v=Ieff_GaRbVY&list=PLp19NUZLnl5NzGcUQZgTmu6Xbg1cgw
 
 To install, simply clone this repository. 
 
+## Week 1
+
+Commands used in the video.
+
+sudo apt-get update
+sudo apt-get -y upgrade
+python3 -V
+cd /usr/bin
+sudo ln -sf ./python3 ./python
+sudo apt-get install -y python3-pip
+sudo pip3 install --upgrade pip
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev -y
+sudo apt-get install selinux-utils
+sudo apt-get install -y policycoreutils
+sudo apt-get install selinux-basics
+sudo setenforce 0
+
+
+Ansible Installation Commands
+
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo apt-get update
+sudo -H pip install ansible
+
+Validation Commands
+
+ansible --version
+ansible -m ping localhost
+
+## Week 2
+
+Build the /etc/hosts
+Build the /etc/ansible/ansible.cfg
+Build the /etc/ansible/hosts
+
+These files can be found in this repository
 
 ## Week 3
 
