@@ -13,7 +13,7 @@ To install, simply clone this repository.
 
 ## Week 3
 
-The follwing playbook was used in this video.
+The following playbook was used in this video.
 
 ```bash
 gather_facts.yml
