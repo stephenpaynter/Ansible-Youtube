@@ -14,7 +14,7 @@ To install, simply clone this repository.
 
 Commands used in the video.
 
-sudo apt-get update
+sudo apt-get update  
 sudo apt-get -y upgrade
 python3 -V
 cd /usr/bin
