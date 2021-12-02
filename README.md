@@ -12,7 +12,7 @@ To install, simply clone this repository.
 
 ## Week 1
 
-Commands used in the video.
+# Commands used in the video.
 
 sudo apt-get update  
 sudo apt-get -y upgrade  
