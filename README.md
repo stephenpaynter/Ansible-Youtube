@@ -10,7 +10,7 @@ https://www.youtube.com/watch?v=Ieff_GaRbVY&list=PLp19NUZLnl5NzGcUQZgTmu6Xbg1cgw
 
 To install, simply clone this repository. 
 
-## Week 1
+## Part 1
 
 ### Commands used in the video.
 
@@ -40,7 +40,7 @@ sudo -H pip install ansible
 ansible --version  
 ansible -m ping localhost  
 
-## Week 2
+## Part 2
 
 Build the /etc/hosts  
 Build the /etc/ansible/ansible.cfg  
@@ -48,7 +48,7 @@ Build the /etc/ansible/hosts
 
 These files can be found in this repository  
 
-## Week 3
+## Part 3
 
 The following playbook was used in this video.
 
@@ -56,9 +56,7 @@ The following playbook was used in this video.
 gather_facts.yml
 ```
 
-## Usage
-
-To run the code use the following command
+###  run the code use the following command
 
 ```yaml
 ansible-playbook gather_facts.yml
