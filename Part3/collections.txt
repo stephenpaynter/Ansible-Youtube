@@ -1,0 +1,3 @@
+ansible-galaxy collection install cisco.nxos
+ansible-galaxy collection install cisco.ios
+ansible-galaxy collection install cisco.asa
