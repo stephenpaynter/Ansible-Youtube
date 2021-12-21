@@ -1,5 +1,5 @@
 !Command: show running-config
-!Time: Sun Dec 19 12:27:33 2021
+!Time: Tue Dec 21 18:08:46 2021
 
 version 7.3(0)D1(1)
 power redundancy-mode redundant
