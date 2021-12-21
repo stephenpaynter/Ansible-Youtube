@@ -64,10 +64,10 @@ ansible-playbook gather_facts.yml
 
 ## Part 4
 
-ssh-keygen
-sudo apt install git
-git config —global user.email testusertest.com
-git config —global user.name Network-Bright
+ssh-keygen  
+sudo apt install git  
+git config —global user.email testusertest.com  
+git config —global user.name Network-Bright  
 
 The following playbook was used in this video.
 
