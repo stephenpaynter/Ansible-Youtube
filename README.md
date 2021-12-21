@@ -50,6 +50,11 @@ These files can be found in this repository
 
 ## Part 3
 
+ssh-keygen
+sudo apt install git
+git config —global user.email testusertest.com
+git config —global user.name Network-Bright
+
 The following playbook was used in this video.
 
 ```bash
@@ -61,6 +66,20 @@ gather_facts.yml
 ```yaml
 ansible-playbook gather_facts.yml
 ```
+
+## Part 4
+
+The following playbook was used in this video.
+
+```bash
+backup.yml
+```
+###  run the code use the following command
+
+```yaml
+ansible-playbook backup.yml
+```
+
 ## Getting Help
 
 If you have questions you can look me up on Twitter @stephenpaynter.
