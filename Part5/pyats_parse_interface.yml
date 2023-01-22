@@ -1,0 +1,96 @@
+---
+
+- hosts: R6
+  gather_facts: false
+  
+  vars:
+    interfaces: []
+
+  tasks:
+  - name: Learn Genie - Interface Status
+    ansible.utils.cli_parse:
+      command: show ip interface brief
+      parser: 
+        name: ansible.netcommon.pyats
+      set_fact: int_output
+
+  - name: Debug Parsed Data
+    debug:
+      var: int_output
+
+  - name: Output All Interfaces
+    debug:
+      msg: "{{ item }}"
+    with_items: "{{ int_output.interface }}"
+
+  - name: Gather Interface Status
+    set_fact:
+      test: "{{ interfaces + [item.status] }}"
+    with_dict: "{{ int_output.interface }}"
+
+  - name: Output Interface Status
+    debug:
+      msg: "{{ item.value.status }}"
+    with_dict: "{{ int_output.interface }}"
+
+  - name: Combine Data 
+    set_fact:
+      new_ints: "{{ new_ints|default({}) | combine( {item.key: item.value.status} ) }}"
+    with_dict: "{{ int_output.interface }}"
+    when: item.value.status == 'up'
+
+  - name: Output Combined
+    debug:
+      var: new_ints
+  
+  - name: Close an Interface To Simulate Failure
+    ios_interfaces:
+      config:
+      - name: loopback111
+        enabled: false
+      state: merged
+
+  - name: Learn Genie - Interface Status Post
+    ansible.utils.cli_parse:
+      command: show ip interface brief
+      parser: 
+        name: ansible.netcommon.pyats
+      set_fact: int_output_post
+
+  - name: Output All Interfaces Post
+    debug:
+      msg: "{{ item }}"
+    with_items: "{{ int_output_post.interface }}"
+
+  - name: Gather Interface Status Post
+    set_fact:
+      test_post: "{{ interfaces + [item.status] }}"
+    with_dict: "{{ int_output_post.interface }}"
+
+  - name: Output Interface Status Post
+    debug:
+      msg: "{{ item.value.status }}"
+    with_dict: "{{ int_output_post.interface }}"
+
+  - name: Combine Data Post
+    set_fact:
+      new_ints_post: "{{ new_ints_post|default({}) | combine( {item.key: item.value.status} ) }}"
+    with_dict: "{{ int_output_post.interface }}"
+
+  - name: Output Combined Post
+    debug:
+      var: new_ints_post
+  
+  - name: Pre/Post Validated
+    debug:
+      msg: "Interface Status Validation Passed"
+    when: new_ints == new_ints_post
+  
+  - name: Pre/Post Failed
+    debug:
+      msg: "Interface Status Validation Failed, Check Device"
+    when: new_ints != new_ints_post
+
+  - debug:
+      msg: "{{ item }} is {{ (new_ints[item] == new_ints_post[item])|ternary('Pass', 'Fail') }}"
+    loop: "{{new_ints.keys()|sort }}"

@@ -1,0 +1,96 @@
+---
+
+- hosts: R6
+  gather_facts: false
+  
+  vars:
+    cdp_neighbors: []
+    cdp_interface: []
+    cdp_neighborspost: []
+    cdp_interfacepost: []
+
+  tasks:
+  - name: Learn CDP With Pyats
+    ansible.utils.cli_parse:
+      command: show cdp neighbors
+      parser: 
+        name: ansible.netcommon.pyats
+      set_fact: cdp_output
+
+  - debug:
+      msg: "{{ cdp_output }}"
+
+  - set_fact:
+      cdp_neighbors: "{{ cdp_neighbors + [item.value.device_id] }}"
+    with_dict: "{{ cdp_output.cdp.index }}"
+
+  - name: CDP Neighbors
+    debug: 
+      msg: "{{ cdp_neighbors }}" 
+
+  - name: CDP Neighbour Count
+    debug:
+      var: "{{ cdp_neighbors | count }}"
+  
+  - set_fact:
+      cdp_interface: "{{ cdp_interface + [item.value.local_interface] }}"
+    with_dict: "{{ cdp_output.cdp.index }}"
+  
+  - name: CDP Local Interfaces
+    debug: 
+      msg: "{{ cdp_interface }}"
+  
+  - name: Combine Neighbor To Interface
+    set_fact:
+      neighbor_details: "{{ dict(cdp_neighbors | zip(cdp_interface)) | dict2items(key_name='neighbor', value_name='interface') }}"
+
+  - name: Display Combined Data
+    debug: 
+      msg: "{{ neighbor_details | sort(attribute='interface') }}"
+
+###### Close An Interface And Run Post Checks      
+
+  - name: Close an Interface To Simulate Failure
+    ios_interfaces:
+      config:
+      - name: GigabitEthernet0/4
+        enabled: false
+      state: merged
+
+  - name: Pause For CDP Neighbor To Drop
+    ansible.builtin.pause:
+      seconds: 30
+
+  - name: Learn CDP With Pyats POST
+    ansible.utils.cli_parse:
+      command: show cdp neighbors
+      parser: 
+        name: ansible.netcommon.pyats
+      set_fact: cdp_outputpost
+  
+  - set_fact:
+      cdp_neighborspost: "{{ cdp_neighborspost + [item.value.device_id] }}"
+    with_dict: "{{ cdp_outputpost.cdp.index }}"
+  
+  - set_fact:
+      cdp_interfacepost: "{{ cdp_interfacepost + [item.value.local_interface] }}"
+    with_dict: "{{ cdp_outputpost.cdp.index }}"
+
+  - name: Combine Neighbor To Interface POST
+    set_fact:
+      neighbor_detailspost: "{{ dict(cdp_neighborspost | zip(cdp_interfacepost)) | dict2items(key_name='neighbor', value_name='interface') }}"
+
+  - name: Display Combined Data POST
+    debug: 
+      msg: "{{ neighbor_detailspost | sort(attribute='interface') }}"
+
+  - name: Pre/Post Validated
+    debug:
+      msg: "CDP Neighbor Validation Passed"
+    when: neighbor_details == neighbor_detailspost
+  
+  - name: Pre/Post Failed
+    debug:
+      msg: "CDP Neighbor Validation Failed, Check Device"
+    when: neighbor_details != neighbor_detailspost
+    
